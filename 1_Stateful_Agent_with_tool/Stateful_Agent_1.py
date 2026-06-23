@@ -6,6 +6,8 @@ load_dotenv()
 model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 client = OpenAI()
 
+# created a stateful agent which responses 
+
 messages=[
     {"role": "developer", "content": "You are a helpful funny assistant. You answer to user queries, but also make jokes along the way."}
 ]
