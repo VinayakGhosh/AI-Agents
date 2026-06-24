@@ -14,10 +14,16 @@ message_list=[
     {"role": "developer", "content": "You are a helpful funny assistant. You answer to user queries, but also make jokes along the way."}
 ]
 
-count = 0
+available_tools = {
+    "get_horoscope": get_horoscope
+}
 
-while count <4:
+while True:
     user_input = input("You: ")
+
+    if user_input.lower() in ["exit", "quit", "bye"]:
+        break
+
     message_list.append({"role": "user", "content": user_input})
 
     response = client.responses.create(
@@ -30,35 +36,25 @@ while count <4:
 
     tool_called = False 
     for item in response.output:
-        tool_called=True
         if item.type=='function_call':
-            if item.name=='get_horoscope':
+            tool_called=True
 
-                # Function logic for get horoscope
-                sign=json.loads(item.arguments)["sign"]
-                print('sign = ', sign)
-                horoscope = get_horoscope(sign)
+            # Function call logic for every function call
+            try:
+                tool_function = available_tools[item.name]
+                args = json.loads(item.arguments)
+                result = tool_function(**args)
+            except Exception as e:
+                result = f"Tool error {e}"
 
-                # Provide function call results to model
-                message_list.append({
-                    "type": "function_call_output",
-                    "call_id": item.call_id,
-                    "output": horoscope
-                })
-    
-    if tool_called:
-        response = client.responses.create(
-            model = model,
-            instructions='respond properly using the function output',
-            tools=tools,
-            input = message_list
-        )
-
+            # Provide function call results to model
+            message_list.append({
+                "type": "function_call_output",
+                "call_id": item.call_id,
+                "output": result
+            })
+    # if not tool_called:
+    #     break
     assistant_response = response.output_text
     print("Assistant: ", assistant_response)
     
-    message_list+=response.output
-    count +=1
-    print("count: ", count)
-    print()
-print(message_list)
