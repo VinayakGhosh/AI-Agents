@@ -1,6 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 from tools import tools, get_horoscope
+from tool_execution import execute_tool
 import os
 import json
 
@@ -40,12 +41,7 @@ while True:
             tool_called=True
 
             # Function call logic for every function call
-            try:
-                tool_function = available_tools[item.name]
-                args = json.loads(item.arguments)
-                result = tool_function(**args)
-            except Exception as e:
-                result = f"Tool error {e}"
+            result = execute_tool(item, available_tools)
 
             # Provide function call results to model
             message_list.append({
@@ -53,8 +49,8 @@ while True:
                 "call_id": item.call_id,
                 "output": result
             })
-    # if not tool_called:
-    #     break
+
+
     assistant_response = response.output_text
     print("Assistant: ", assistant_response)
     
