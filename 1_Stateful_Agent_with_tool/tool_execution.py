@@ -10,10 +10,14 @@ def execute_tool(tool_call, available_tools):
     print("=" * 50)
     print("Tool:", tool_name)
     print("Arguments:", tool_call.arguments)
+    
     try:
         args = json.loads(tool_call.arguments)
         tool_function = available_tools[tool_name]
         result = tool_function(**args)
+        print("Result:", result)
+        print('='*50)
+        print()
         return result
     except Exception as e:
         return f"Tool execution failed: {str(e)}"

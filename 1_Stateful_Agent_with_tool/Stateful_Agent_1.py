@@ -27,30 +27,34 @@ while True:
 
     message_list.append({"role": "user", "content": user_input})
 
-    response = client.responses.create(
-        model=model,
-        tools=tools,
-        input=message_list
-    )
+    while True:
 
-    message_list += response.output
+        response = client.responses.create(
+            model=model,
+            tools=tools,
+            input=message_list
+        )
 
-    tool_called = False 
-    for item in response.output:
-        if item.type=='function_call':
-            tool_called=True
+        message_list += response.output
 
-            # Function call logic for every function call
-            result = execute_tool(item, available_tools)
+        tool_called = False 
+        for item in response.output:
+            if item.type=='function_call':
+                tool_called=True
 
-            # Provide function call results to model
-            message_list.append({
-                "type": "function_call_output",
-                "call_id": item.call_id,
-                "output": result
-            })
+                # Function call logic for every function call
+                result = execute_tool(item, available_tools)
 
+                # Provide function call results to model
+                message_list.append({
+                    "type": "function_call_output",
+                    "call_id": item.call_id,
+                    "output": result
+                })
+        if not tool_called:
+            break
 
     assistant_response = response.output_text
     print("Assistant: ", assistant_response)
+    print()
     
