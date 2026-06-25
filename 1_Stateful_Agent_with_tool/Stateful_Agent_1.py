@@ -19,7 +19,12 @@ available_tools = {
     "get_horoscope": get_horoscope
 }
 
-while True:
+# Set a strict guardrail against infinite agent loops
+MAX_ITERATIONS = 5
+iterations = 0
+
+while iterations < MAX_ITERATIONS:
+    iterations += 1
     user_input = input("You: ")
 
     if user_input.lower() in ["exit", "quit", "bye"]:
