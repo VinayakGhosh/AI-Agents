@@ -1,0 +1,2 @@
+All microservices deployed to production must implement standard health checks at the '/healthz' endpoint. 
+Database migrations must be executed during the maintenance window on Tuesdays between 02:00 and 04:00 UTC.

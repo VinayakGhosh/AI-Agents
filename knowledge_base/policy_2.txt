@@ -1,0 +1,3 @@
+For deployments, we use a blue-green strategy to minimize downtime. 
+If a rollback is required, the deployment pipeline will automatically revert traffic within 60 seconds.
+Emergency hotfixes require approval from the Director of Engineering.
