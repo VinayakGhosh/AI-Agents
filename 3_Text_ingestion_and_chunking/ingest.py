@@ -101,7 +101,7 @@ def query_knowledge_base(user_query, vault_data, top_k=2):
     return scored_chunks[:top_k]
 
 # --- Test Our Search Implementation ---
-query = "What happens if a health check fails during deployment?"
+query = "What happens if a health check fails during deployment does it rollback?"
 print(f"\nUser Query: '{query}'")
 print("Searching vault...")
 
