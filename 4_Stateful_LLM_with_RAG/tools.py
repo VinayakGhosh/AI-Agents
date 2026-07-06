@@ -1,3 +1,5 @@
+from ingestion_and_chunking import query_knowledge_base, vault_data
+
 # tool definition for search_engineering_handbook
 
 tools = [
@@ -18,3 +20,8 @@ tools = [
 
     }
 ]
+
+
+def search_engineering_handbook(query):
+    # using vector search function to get top matches
+    results =  query_knowledge_base(query, vault_data, top_k=2)
