@@ -18,7 +18,7 @@ def chunk_text(text, chunk_size=150, overlap=30):
     return chunks
 
 
-# 2) Dir scanninga and processing
+# 2) Dir scanning and processing
 
 knowledge_dir = '../knowledge_base'
 processed_chunks = []
@@ -101,7 +101,7 @@ def query_knowledge_base(user_query, vault_data, top_k=2):
     return scored_chunks[:top_k]
 
 # --- Test Our Search Implementation ---
-query = "What happens if a health check fails during deployment does it rollback?"
+query = "how do i bake a chocolate cake?"
 print(f"\nUser Query: '{query}'")
 print("Searching vault...")
 
@@ -110,3 +110,5 @@ result = query_knowledge_base(query, processed_chunks, top_k=1)
 for score, chunk in result:
     print(f"\n[Match Score: {score:.4f}] Found in file: {chunk['source_file']}")
     print(f"Content:\n{chunk['content']}")
+
+
